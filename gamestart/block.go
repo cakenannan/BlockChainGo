@@ -33,7 +33,7 @@ func NewGenesisBlock() *Block {
 }
 
 //对象转为二进制字节集,写入文件
-func (block *Block)Serialize() []byte {
+func (block *Block) SerializeBlock() []byte {
 	var result bytes.Buffer
 	encoder := gob.NewEncoder(&result)
 	err := encoder.Encode(block)
@@ -44,7 +44,7 @@ func (block *Block)Serialize() []byte {
 }
 
 //读取文件,二进制字节集转为对象
-func Deserialize(data []byte) *Block {
+func DeserializeBlock(data []byte) *Block {
 	var block Block
 	decoder := gob.NewDecoder(bytes.NewReader(data))
 	err := decoder.Decode(&block)
