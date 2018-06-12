@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="715ffe56-ed96-4a77-955c-20a01a5588bb" name="Default" comment="" />
+    <list default="true" id="715ffe56-ed96-4a77-955c-20a01a5588bb" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/gamestart/Block.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/BlockChain.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamestart/test.go" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,7 +16,38 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/gamestart/main.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="405">
+              <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Block.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/Block.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1080">
+              <caret line="40" column="1" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+              <folding>
+                <element signature="e#14#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockChain.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/BlockChain.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="13" column="7" lean-forward="true" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -37,6 +74,9 @@
         <option value="$PROJECT_DIR$/2轻量级区块链实现/煎蛋区块链实现.go" />
         <option value="$PROJECT_DIR$/3gamestart/_test.go" />
         <option value="$PROJECT_DIR$/3gamestart/test.go" />
+        <option value="$PROJECT_DIR$/gamestart/BlockChain.go" />
+        <option value="$PROJECT_DIR$/gamestart/Block.go" />
+        <option value="$PROJECT_DIR$/gamestart/main.go" />
       </list>
     </option>
   </component>
@@ -49,13 +89,15 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="296" />
-    <option name="y" value="35" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="286" />
+    <option name="y" value="45" />
     <option name="width" value="1400" />
     <option name="height" value="989" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -67,6 +109,11 @@
             <path>
               <item name="BlockChain" type="b2602c69:ProjectViewProjectNode" />
               <item name="BlockChain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="BlockChain" type="b2602c69:ProjectViewProjectNode" />
+              <item name="BlockChain" type="462c0819:PsiDirectoryNode" />
+              <item name="gamestart" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -98,14 +145,14 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build 煎蛋区块链实现.go">
-    <configuration name="go build 1测试echo.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Go Build.go build gamestart/">
+    <configuration name="go build BlockChain/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="BlockChain" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i" />
-      <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/1echo框架/1测试echo.go" />
-      <directory value="$PROJECT_DIR$/" />
+      <kind value="DIRECTORY" />
+      <filePath value="$PROJECT_DIR$/" />
+      <directory value="$PROJECT_DIR$" />
     </configuration>
     <configuration name="go build 煎蛋区块链实现.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="BlockChain" />
@@ -115,26 +162,56 @@
       <filePath value="$PROJECT_DIR$/2轻量级区块链实现/煎蛋区块链实现.go" />
       <directory value="$PROJECT_DIR$/" />
     </configuration>
+    <configuration name="go build 测试echo.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="BlockChain" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/echo/测试echo.go" />
+      <directory value="$PROJECT_DIR$/" />
+    </configuration>
+    <configuration name="go build gamestart/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="BlockChain" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <filePath value="$PROJECT_DIR$/" />
+      <directory value="$PROJECT_DIR$/gamestart" />
+    </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="BlockChain" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/gamestart/main.go" />
+      <directory value="$PROJECT_DIR$/" />
+    </configuration>
     <list>
-      <item itemvalue="Go Build.go build 1测试echo.go" />
       <item itemvalue="Go Build.go build 煎蛋区块链实现.go" />
+      <item itemvalue="Go Build.go build 测试echo.go" />
+      <item itemvalue="Go Build.go build main.go" />
+      <item itemvalue="Go Build.go build BlockChain/" />
+      <item itemvalue="Go Build.go build gamestart/" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build gamestart/" />
+        <item itemvalue="Go Build.go build BlockChain/" />
+        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Build.go build 测试echo.go" />
         <item itemvalue="Go Build.go build 煎蛋区块链实现.go" />
-        <item itemvalue="Go Build.go build 1测试echo.go" />
       </list>
     </recent_temporary>
   </component>
   <component name="ToolWindowManager">
-    <frame x="296" y="35" width="1400" height="989" extended-state="1" />
+    <frame x="244" y="30" width="1400" height="989" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15028901" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007225" side_tool="true" weight="0.3284091" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3291714" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49927744" visible="true" weight="0.3284091" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
@@ -198,11 +275,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/simpleversion/煎蛋区块链实现.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/gamestart/test.go">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/simpleversion/煎蛋区块链实现.go">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/gamestart/Block.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1080">
+          <caret line="40" column="1" selection-start-line="40" selection-start-column="1" selection-end-line="40" selection-end-column="1" />
+          <folding>
+            <element signature="e#14#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/BlockChain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="7" lean-forward="true" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
