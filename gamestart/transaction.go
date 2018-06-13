@@ -11,24 +11,12 @@ import (
 
 const subsidy = 10		//奖励,矿工挖矿给与的奖励
 
-//输入
-type TXInput struct {
-	Txid []byte			//交易id
-	Vout int			//保存交易中的一个output索引
-	ScriptSig string	//保存了一个任意用户定义的钱包地址
-}
-
-//检查地址是否启动事务
-func (input *TXInput) CanUnlockOutputWith(unlockingData string) bool {
-	return input.ScriptSig == unlockingData
-}
-
-//检查交易事务是否为coinbase,挖矿得来的奖励币
+//是否为coinbase交易
 func (tx *Transaction) IsCoinBase() bool {
 	return len(tx.Vin) == 1 && len(tx.Vin[0].Txid) == 0 && tx.Vin[0].Vout == -1
 }
 
-//设置交易id
+//设置交易id,为交易hash值
 func (tx *Transaction) SetID() {
 	var encoded bytes.Buffer
 	var hash [32]byte
@@ -41,14 +29,29 @@ func (tx *Transaction) SetID() {
 	tx.ID = hash[:]
 }
 
-//输出
-type TXOutput struct {
-	Value int			//币值
-	ScriptPubKey string	//
+//输入
+type TXInput struct {
+	Txid []byte			//一个输入引用了之前交易的一个输出,之前交易id
+	Vout int			//该输出在那笔交易中所有输出的索引
+	//脚本 提供了可解锁输出结构里面 ScriptPubKey 字段的数据
+	//提供的数据是正确的，那么输出就会被解锁，然后被解锁的值就可以被用于产生新的输出；
+	// 如果数据不正确，输出就无法被引用在输入中，或者说，无法使用这个输出
+	ScriptSig string	//由于我们还没有实现地址，所以目前 ScriptSig 将仅仅存储一个用户自定义的任意钱包地址
 }
 
-//是否可以解锁输出
-func (out *TXOutput) CanBeUnlockWith(unlockingData string) bool {
+//校验输入
+func (input *TXInput) CanUnlockOutputWith(unlockingData string) bool {
+	return input.ScriptSig == unlockingData
+}
+
+//输出
+type TXOutput struct {
+	Value int			//一定量的比特币
+	ScriptPubKey string	//锁定脚本,要花费这笔钱,必须要解锁该脚本
+}
+
+//检验输出
+func (out *TXOutput) CanBeUnlockedWith(unlockingData string) bool {
 	return out.ScriptPubKey == unlockingData
 }
 
@@ -64,12 +67,13 @@ func NewCoinBaseTX(to, data string) *Transaction {
 	if data == "" {
 		data = fmt.Sprintf("挖矿奖励给%s",to)
 	}
-	//输入奖励
+	//输入
 	txin := TXInput{[]byte{}, -1, data}	//Vout挖矿所得为-1
-	//输入奖励
+	//输出
 	txout := TXOutput{subsidy, to}
 	//交易
 	tx := Transaction{nil, []TXInput{txin}, []TXOutput{txout}}
+	tx.SetID()
 	return &tx
 }
 
@@ -77,12 +81,14 @@ func NewCoinBaseTX(to, data string) *Transaction {
 func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transaction {
 	var inputs []TXInput
 	var outputs []TXOutput
+	//找到未花费outputs
 	acc,validOutputs := bc.FindSpendableOutputs(from, amount)
 	if acc < amount {
 		log.Panic("交易金额不足")
 	}
-	for txid,outs := range validOutputs {	//循环遍历无效输出
-		txID,err := hex.DecodeString(txid)	//解码
+	// 对于每个找到的输出,创建一个引用该输出的输入
+	for txid,outs := range validOutputs {
+		txID,err := hex.DecodeString(txid)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -91,10 +97,10 @@ func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transactio
 			inputs = append(inputs, input)	//输出的交易
 		}
 	}
-	//交易叠加
-	outputs = append(outputs, TXOutput{amount, to})
+	// 对于outputs,包括数量amount指向to,和数量acc-amount指向from
+	outputs = append(outputs, TXOutput{amount, to})	//输出到to
 	if acc > amount {
-		outputs = append(outputs, TXOutput{acc - amount, from})
+		outputs = append(outputs, TXOutput{acc - amount, from})	//找零到from
 	}
 	tx := Transaction{nil, inputs, outputs}
 	tx.SetID()
