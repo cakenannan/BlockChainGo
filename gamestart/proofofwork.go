@@ -13,8 +13,8 @@ var (
 )
 
 // 在比特币中，当一个块被挖出来以后，“target bits” 代表了区块头里存储的难度，也就是开头有多少个 0。
-// 这里的 24 指的是算出来的哈希前 24 位必须是 0，如果用 16 进制表示，就是前 6 位必须是 0
-const targetBits = 24	//对比的位数	挖矿难度值
+// 这里的 16 指的是算出来的哈希前 16 位必须是 0，如果用 16 进制表示，就是前 6 位必须是 0
+const targetBits = 16	//对比的位数	挖矿难度值
 
 type ProofOfWork struct {
 	block *Block	//区块
@@ -36,7 +36,7 @@ func (pow *ProofOfWork) PrepareData(nonce int) []byte {
 	data := bytes.Join(
 		[][]byte{
 			pow.block.PrevHash,
-			pow.block.Data,
+			pow.block.HashTransactions(),	//交易hash
 			IntToHex(pow.block.Timestamp),	//时间,转化为十六进制
 			IntToHex(int64(targetBits)),	//位数
 			IntToHex(int64(nonce)),			//保存工作量的nonce
@@ -50,7 +50,6 @@ func (pow *ProofOfWork) Run() (int, []byte) {
 	var hashInt big.Int
 	var hash [32]byte
 	var nonce = 0
-	fmt.Printf("当前挖矿计算的区块数据:%s",pow.block.Data)
 	for nonce < maxNonce {				// maxNounce被设置成math.MaxInt64，防止溢出
 		data := pow.PrepareData(nonce)	//准备数据
 		hash = sha256.Sum256(data)
