@@ -33,7 +33,7 @@ func NewGenesisBlock() *Block {
 }
 
 //对象转为二进制字节集,写入文件
-func (block *Block) SerializeBlock() []byte {
+func (block *Block) Serialize() []byte {
 	var result bytes.Buffer
 	encoder := gob.NewEncoder(&result)
 	err := encoder.Encode(block)

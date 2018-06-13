@@ -49,6 +49,7 @@ func (cli *CLI) ShowBlockChain() {
 	}
 }
 
+//入口
 func (cli *CLI) Run() {
 	cli.ValidateArgs()	//校验
 	//处理命令行参数
