@@ -2,9 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="715ffe56-ed96-4a77-955c-20a01a5588bb" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/gamestart/base58.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/blockchain_iterator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_createblockchain.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_createwallet.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_getbalance.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_listaddress.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_send.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/cli_showchain.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/transaction_input.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/transaction_output.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/wallet.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gamestart/wallets.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamestart/blockchain.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gamestart/blockchain.go" beforeDir="false" afterPath="$PROJECT_DIR$/gamestart/blockchain.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamestart/cli.go" beforeDir="false" afterPath="$PROJECT_DIR$/gamestart/cli.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamestart/gamestart.exe" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/gamestart/transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/gamestart/transaction.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gamestart/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/gamestart/utils.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,34 +31,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="block.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gamestart/block.go">
+      <file leaf-file-name="cli.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="52" column="22" lean-forward="true" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
+            <state relative-caret-position="-1825">
+              <caret line="26" column="34" lean-forward="true" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+              <folding>
+                <element signature="e#14#63#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="proofofwork.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gamestart/proofofwork.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="blockchain.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gamestart/blockchain.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="169" column="44" lean-forward="true" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.go" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gamestart/main.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="324">
@@ -51,25 +52,85 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cli.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/gamestart/cli.go">
+      <file leaf-file-name="cli_createwallet.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli_createwallet.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="47" column="17" lean-forward="true" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
+            <state relative-caret-position="243">
+              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cli_getbalance.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli_getbalance.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
               <folding>
-                <element signature="e#14#63#0" expanded="true" />
+                <element signature="e#14#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="transaction.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="transaction.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gamestart/transaction.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
-              <caret line="61" column="19" lean-forward="true" selection-start-line="61" selection-start-column="19" selection-end-line="61" selection-end-column="19" />
+            <state relative-caret-position="470">
+              <caret line="92" column="60" lean-forward="true" selection-start-line="92" selection-start-column="60" selection-end-line="92" selection-end-column="60" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="blockchain.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/blockchain.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="278">
+              <caret line="48" column="6" lean-forward="true" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cli_createblockchain.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli_createblockchain.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
               <folding>
-                <element signature="e#14#96#0" expanded="true" />
+                <element signature="e#14#65#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cli_listaddress.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli_listaddress.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+              <folding>
+                <element signature="e#14#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="transaction_input.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/transaction_input.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cli_showchain.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/gamestart/cli_showchain.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+              <folding>
+                <element signature="e#14#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -119,10 +180,23 @@
         <option value="$PROJECT_DIR$/gameStart/Block.go" />
         <option value="$PROJECT_DIR$/gameStart/ProofOfWork.go" />
         <option value="$PROJECT_DIR$/gamestart/block.go" />
-        <option value="$PROJECT_DIR$/gamestart/main.go" />
         <option value="$PROJECT_DIR$/gamestart/proofofwork.go" />
-        <option value="$PROJECT_DIR$/gamestart/cli.go" />
+        <option value="$PROJECT_DIR$/gamestart/utils.go" />
+        <option value="$PROJECT_DIR$/gamestart/base58.go" />
+        <option value="$PROJECT_DIR$/gamestart/main.go" />
+        <option value="$PROJECT_DIR$/gamestart/transaction_input.go" />
+        <option value="$PROJECT_DIR$/gamestart/transaction_output.go" />
+        <option value="$PROJECT_DIR$/gamestart/blockchain_iterator.go" />
         <option value="$PROJECT_DIR$/gamestart/blockchain.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_createwallet.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_createblockchain.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_getbalance.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_listaddress.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_showchain.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli_send.go" />
+        <option value="$PROJECT_DIR$/gamestart/cli.go" />
+        <option value="$PROJECT_DIR$/gamestart/wallet.go" />
+        <option value="$PROJECT_DIR$/gamestart/wallets.go" />
         <option value="$PROJECT_DIR$/gamestart/transaction.go" />
       </list>
     </option>
@@ -137,8 +211,8 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="397" />
-    <option name="y" value="7" />
+    <option name="x" value="279" />
+    <option name="y" value="23" />
     <option name="width" value="1400" />
     <option name="height" value="983" />
   </component>
@@ -193,12 +267,12 @@
     </option>
   </component>
   <component name="RunManager" selected="Go Build.go build gamestart/">
-    <configuration name="go build block.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build base58.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="BlockChain" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/gamestart/block.go" />
+      <filePath value="$PROJECT_DIR$/gamestart/base58.go" />
       <directory value="$PROJECT_DIR$/" />
     </configuration>
     <configuration name="go build cli.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -217,50 +291,51 @@
       <filePath value="$PROJECT_DIR$/" />
       <directory value="$PROJECT_DIR$/gamestart" />
     </configuration>
-    <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build wallet.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="BlockChain" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/gameStart/main.go" />
+      <filePath value="$PROJECT_DIR$/gamestart/wallet.go" />
       <directory value="$PROJECT_DIR$/" />
     </configuration>
-    <configuration name="go build transaction.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build wallets.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="BlockChain" />
       <working_directory value="$PROJECT_DIR$/" />
       <go_parameters value="-i" />
       <kind value="FILE" />
-      <filePath value="$PROJECT_DIR$/gamestart/transaction.go" />
+      <filePath value="$PROJECT_DIR$/gamestart/wallets.go" />
       <directory value="$PROJECT_DIR$/" />
     </configuration>
     <list>
       <item itemvalue="Go Build.go build gamestart/" />
-      <item itemvalue="Go Build.go build main.go (1)" />
-      <item itemvalue="Go Build.go build transaction.go" />
-      <item itemvalue="Go Build.go build block.go" />
       <item itemvalue="Go Build.go build cli.go" />
+      <item itemvalue="Go Build.go build base58.go" />
+      <item itemvalue="Go Build.go build wallet.go" />
+      <item itemvalue="Go Build.go build wallets.go" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build gamestart/" />
+        <item itemvalue="Go Build.go build wallets.go" />
+        <item itemvalue="Go Build.go build wallet.go" />
+        <item itemvalue="Go Build.go build base58.go" />
         <item itemvalue="Go Build.go build cli.go" />
-        <item itemvalue="Go Build.go build block.go" />
-        <item itemvalue="Go Build.go build transaction.go" />
-        <item itemvalue="Go Build.go build main.go (1)" />
       </list>
     </recent_temporary>
   </component>
   <component name="ToolWindowManager">
-    <frame x="397" y="7" width="1400" height="983" extended-state="0" />
+    <frame x="279" y="23" width="1400" height="983" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12066474" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007225" side_tool="true" weight="0.3284055" />
       <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32837528" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49927744" weight="0.21931818" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49927744" weight="0.21853547" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -271,7 +346,6 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3284091" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,6 +355,58 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/gamestart/wallets.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="999">
+          <caret line="45" column="22" lean-forward="true" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/block.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1242">
+          <caret line="52" column="22" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/proofofwork.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1620">
+          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/blockchain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4401">
+          <caret line="169" column="44" lean-forward="true" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/main.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1107">
+          <caret line="47" column="17" lean-forward="true" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#63#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/transaction.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="61" column="19" lean-forward="true" selection-start-line="61" selection-start-column="19" selection-end-line="61" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gamestart/block.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
@@ -396,13 +522,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gamestart/utils.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/go/src/github.com/boltdb/bolt/tx.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
@@ -410,51 +529,168 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gamestart/main.go">
+    <entry file="file://$PROJECT_DIR$/gamestart/proofofwork.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="416">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/math/big/int.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="60" column="5" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Go/src/bytes/bytes_decl.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/base58.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="929">
+          <caret line="46" column="29" lean-forward="true" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gamestart/block.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="52" column="22" lean-forward="true" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
+        <state relative-caret-position="108">
+          <caret line="10" column="6" lean-forward="true" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/blockchain_iterator.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_send.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="14" column="29" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+          <folding>
+            <element signature="e#14#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_showchain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+          <folding>
+            <element signature="e#14#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_listaddress.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="12" column="39" selection-start-line="12" selection-start-column="39" selection-end-line="12" selection-end-column="39" />
+          <folding>
+            <element signature="e#14#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_createblockchain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding>
+            <element signature="e#14#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_getbalance.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="34" lean-forward="true" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+          <folding>
+            <element signature="e#14#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/wallet.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="567">
+          <caret line="59" column="1" lean-forward="true" selection-start-line="59" selection-start-column="1" selection-end-line="59" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/wallets.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="45" column="28" lean-forward="true" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/utils.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/transaction_output.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/cli_createwallet.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/transaction_input.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/blockchain.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="48" column="6" lean-forward="true" selection-start-line="48" selection-start-column="6" selection-end-line="48" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gamestart/transaction.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="92" column="60" lean-forward="true" selection-start-line="92" selection-start-column="60" selection-end-line="92" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gamestart/cli.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="47" column="17" lean-forward="true" selection-start-line="47" selection-start-column="17" selection-end-line="47" selection-end-column="17" />
+        <state relative-caret-position="-1825">
+          <caret line="26" column="34" lean-forward="true" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
           <folding>
             <element signature="e#14#63#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/gamestart/blockchain.go">
+    <entry file="file://$PROJECT_DIR$/gamestart/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="169" column="44" lean-forward="true" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gamestart/proofofwork.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="66" lean-forward="true" selection-start-line="66" selection-end-line="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gamestart/transaction.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
-          <caret line="61" column="19" lean-forward="true" selection-start-line="61" selection-start-column="19" selection-end-line="61" selection-end-column="19" />
-          <folding>
-            <element signature="e#14#96#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="324">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
         </state>
       </provider>
     </entry>
