@@ -87,6 +87,7 @@ func (cli *CLI) Run() {
 	}
 	if createwalletcmd.Parsed() {
 		cli.createWallet()		//创建钱包
+		cli.listAddress()
 	}
 	if listaddresscmd.Parsed() {
 		cli.listAddress()		//显示所有地址

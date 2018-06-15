@@ -32,7 +32,7 @@ func (ws Wallets) CreateWallet() string {
 
 //从文件中读取钱包集合
 func (ws Wallets) LoadFromFile() error {
-	if _,err := os.Stat(walletFile); os.IsNotExist(err) {
+	if _,err := os.Stat(walletFile); os.IsNotExist(err) {//判断文件是否存在
 		return err
 	}
 	fileContent, err := ioutil.ReadFile(walletFile)	//读取文件
@@ -68,6 +68,7 @@ func (ws Wallets) SaveToFile() {
 
 //抓取钱包地址集合
 func (ws Wallets) GetAddresses() []string {
+	fmt.Println("wallets num",len(ws.Wallets))
 	var addresses []string
 	for address := range ws.Wallets {
 		addresses = append(addresses, address)

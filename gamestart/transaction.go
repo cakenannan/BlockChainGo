@@ -64,7 +64,7 @@ func (tx Transaction) String() string {
 	return strings.Join(lines, "\n")
 }
 
-//对交易事务进行hash
+//对交易序列化,并进行hash,得到要签名的数据
 func (tx *Transaction) Hash() []byte {
 	var hash [32]byte
 	txCopy := *tx
@@ -73,24 +73,30 @@ func (tx *Transaction) Hash() []byte {
 	return hash[:]
 }
 
-//签名
+//考虑到交易解锁的是之前的输出，然后重新分配里面的价值，并锁定新的输出，那么必须要签名以下数据：
+//	1,存储在已解锁输出的公钥哈希。它识别了一笔交易的“发送方”。
+//	2,存储在新的锁定输出里面的公钥哈希。它识别了一笔交易的“接收方”。
+//	3,新的输出值。
+//在比特币中，锁定/解锁逻辑被存储在脚本中，它们被分别存储在输入和输出的 ScriptSig 和 ScriptPubKey 字段。
+//由于比特币允许这样不同类型的脚本，它对 ScriptPubKey 的整个内容进行了签名。
+//签名	并不是对交易签名,而是对去除部分内容的输入副本签名,输入里面存储了被引用输出的 ScriptPubKey
 func (tx *Transaction)Sign(privateKey ecdsa.PrivateKey, prevTXs map[string]Transaction) {
 	if tx.IsCoinBase() {
 		return
 	}
 	for _, vin := range tx.Vin {
 		if prevTXs[hex.EncodeToString(vin.Txid)].ID == nil {
-			log.Panic("以前的交易不正确")
+			log.Panic("之前的交易不正确")
 		}
 	}
-	txCopy := tx.TrimmedCopy()	//拷贝副本
+	txCopy := tx.TrimmedCopy()				//交易副本
 	for inID, vin := range txCopy.Vin {
-		prevTx := prevTXs[hex.EncodeToString(vin.Txid)]
+		prevTx := prevTXs[hex.EncodeToString(vin.Txid)]	//根据id找到输入引用的输出的那笔交易
 		txCopy.Vin[inID].Signature = nil
-		txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash
-		txCopy.ID = txCopy.Hash()
+		txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash	//引用输出的公钥哈希赋值给输入
+		txCopy.ID = txCopy.Hash()			//Hash得到要签名的数据,给id赋值
 		txCopy.Vin[inID].PubKey = nil
-		r,s,err := ecdsa.Sign(rand.Reader, &privateKey, txCopy.ID)
+		r,s,err := ecdsa.Sign(rand.Reader, &privateKey, txCopy.ID)	//对txCopy.ID签名
 		if err != nil {
 			log.Panic(err)
 		}
@@ -115,10 +121,12 @@ func (tx *Transaction) Verify(prevTXs map[string]Transaction) bool {
 		prevTx := prevTXs[hex.EncodeToString(vin.Txid)]
 		txCopy.Vin[inID].Signature = nil
 		txCopy.Vin[inID].PubKey = prevTx.Vout[vin.Vout].PubKeyHash	//设置公钥
+		txCopy.ID = txCopy.Hash()		//求得ID,即签名的数据
+		txCopy.Vin[inID].PubKey = nil
 
 		r := big.Int{}
 		s := big.Int{}
-		siglen := len(vin.Signature)	//统计签名的长度
+		siglen := len(vin.Signature)	//签名的长度
 		r.SetBytes(vin.Signature[:(siglen/2)])
 		s.SetBytes(vin.Signature[(siglen/2):])
 
@@ -128,12 +136,10 @@ func (tx *Transaction) Verify(prevTXs map[string]Transaction) bool {
 		x.SetBytes(vin.PubKey[:(keylen/2)])
 		y.SetBytes(vin.PubKey[(keylen/2):])
 
-		dataToVerify := fmt.Sprintf("%x\n",txCopy)
-		rawPubKey := ecdsa.PublicKey{curve,&x, &y}
-		if !ecdsa.Verify(&rawPubKey, []byte(dataToVerify), &r, &s) {
+		rawPubKey := ecdsa.PublicKey{curve,&x, &y}	//获取公钥
+		if !ecdsa.Verify(&rawPubKey, txCopy.ID, &r, &s) {		//验证 公钥,数据,签名
 			return false
 		}
-		txCopy.Vin[inID].PubKey = nil
 	}
 	return true
 }
@@ -143,6 +149,7 @@ func (tx *Transaction) TrimmedCopy() Transaction {
 	var inputs []TXInput
 	var outputs []TXOutput
 	for _, vin := range tx.Vin {
+		//输入的Signature和PubKey被置为nil
 		inputs = append(inputs, TXInput{vin.Txid, vin.Vout, nil, nil})
 	}
 	for _, vout := range tx.Vout {
@@ -157,29 +164,10 @@ func (tx *Transaction) IsCoinBase() bool {
 	return len(tx.Vin) == 1 && len(tx.Vin[0].Txid) == 0 && tx.Vin[0].Vout == -1
 }
 
-//设置交易id,为交易hash值
-func (tx *Transaction) SetID() {
-	var encoded bytes.Buffer
-	var hash [32]byte
-	enc := gob.NewEncoder(&encoded)
-	err := enc.Encode(tx)
-	if err != nil {
-		log.Panic(err)
-	}
-	hash = sha256.Sum256(encoded.Bytes())
-	tx.ID = hash[:]
-}
-
 //挖矿交易
 func NewCoinBaseTX(to, data string) *Transaction {
 	if data == "" {
-		//data = fmt.Sprintf("挖矿奖励给%s",to)
-		randData := make([]byte, 20)
-		_,err := rand.Read(randData)
-		if err != nil {
-			log.Panic(err)
-		}
-		data = fmt.Sprintf("%x",randData)
+		data = fmt.Sprintf("挖矿奖励给%s",to)
 	}
 	//输入
 	txin := TXInput{[]byte{}, -1, nil, []byte(data)}	//Vout挖矿所得为-1
@@ -187,7 +175,7 @@ func NewCoinBaseTX(to, data string) *Transaction {
 	txout := NewTXOutput(subsidy, to)
 	//交易
 	tx := Transaction{nil, []TXInput{txin}, []TXOutput{*txout}}
-	tx.SetID()
+	tx.ID = tx.Hash()
 	return &tx
 }
 
@@ -209,18 +197,19 @@ func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transactio
 		log.Panic("交易金额不足")
 	}
 	// 对于每个找到的输出,创建一个引用该输出的输入
-	for txid,outs := range validOutputs {
-		txID,err := hex.DecodeString(txid)
+	for txid,outs := range validOutputs {				//先循环得到交易id和该交易中对应输出的索引集合
+		txID,err := hex.DecodeString(txid)	//转为字节数组
 		if err != nil {
 			log.Panic(err)
 		}
-		for _,out := range outs {
-			input := TXInput{txID, out, nil, wallet.PublicKey}	//输入的交易
-			inputs = append(inputs, input)	//输出的交易
+		for _,out := range outs {						//循环同一交易下多个输出
+			input := TXInput{txID, out, nil, wallet.PublicKey}	//输入
+			inputs = append(inputs, input)
 		}
 	}
 	// 对于outputs,包括数量amount指向to,和数量acc-amount指向from
 	outputs = append(outputs, *NewTXOutput(amount, to))	//输出到to
+	//因为输出不可分,所以acc可能大于amount,要找零
 	if acc > amount {
 		outputs = append(outputs, *NewTXOutput(acc-amount, from))	//找零到from
 	}

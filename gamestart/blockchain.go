@@ -8,6 +8,7 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"bytes"
+	"errors"
 )
 
 const dbFile = "blockchain.db"		//数据库文件名，在当前目录下
@@ -22,6 +23,14 @@ type BlockChain struct {
 //挖矿
 func (chain *BlockChain) MineBlock(transactions []*Transaction) {
 	var lastHash []byte		//最后一个块的hash
+
+	//对交易进行验证
+	for _, tx := range transactions {
+		if !chain.VerifyTransaction(tx) {
+			log.Panic("交易有错")
+		}
+	}
+
 	err := chain.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blockBucket))
 		lastHash = bucket.Get([]byte("l"))	//取出链上最后一个hash
@@ -50,7 +59,7 @@ func (chain *BlockChain) MineBlock(transactions []*Transaction) {
 func (chain *BlockChain)SignTransaction(tx *Transaction, privatekey ecdsa.PrivateKey) {
 	prevTXs := make(map[string]Transaction)
 	for _, vin := range tx.Vin {
-		prevTx, err := chain.FindTransaction(vin.Txid)
+		prevTx, err := chain.FindTransaction(vin.Txid)	//找到输入引用的输出所在的交易
 		if err != nil {
 			log.Panic(err)
 		}
@@ -63,7 +72,7 @@ func (chain *BlockChain)SignTransaction(tx *Transaction, privatekey ecdsa.Privat
 func (chain *BlockChain) VerifyTransaction(tx *Transaction) bool {
 	prevTXs := make(map[string]Transaction)
 	for _, vin := range tx.Vin {
-		prevTx,err := chain.FindTransaction(vin.Txid)	//查找交易
+		prevTx,err := chain.FindTransaction(vin.Txid)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -72,11 +81,12 @@ func (chain *BlockChain) VerifyTransaction(tx *Transaction) bool {
 	return tx.Verify(prevTXs)
 }
 
+//根据id查找交易
 func (chain *BlockChain) FindTransaction(ID []byte) (Transaction, error) {
 	bci := chain.Iterator()
-	for {
+	for {											//循环区块
 		block := bci.Next()
-		for _, tx := range block.Transactions {
+		for _, tx := range block.Transactions {		//循环区块中的交易
 			if bytes.Compare(tx.ID, ID) == 0 {
 				return *tx, nil
 			}
@@ -85,7 +95,7 @@ func (chain *BlockChain) FindTransaction(ID []byte) (Transaction, error) {
 			break
 		}
 	}
-	return Transaction{}, nil
+	return Transaction{}, errors.New("交易未找到")
 }
 
 //查找包含未被花费输出的交易
@@ -96,17 +106,18 @@ func (chain *BlockChain)FindUnspendTransactions(pubKeyHash []byte) []Transaction
 	for {
 		block := bci.Next()
 		for _,tx := range block.Transactions {
-			txID := hex.EncodeToString(tx.ID)
+			txID := hex.EncodeToString(tx.ID)		//编码为string
 		Outputs:
 			for outIdx, out := range tx.Vout {
-				//检查out是否已经被花费
+				//检查out是否已经被花费 TODO
 				if spentTXOS[txID] != nil {
 					for _, spentOut := range spentTXOS[txID] {
-						if spentOut == outIdx {
-							continue Outputs	//循环到不等为止
+						if spentOut == outIdx {			//已被花费
+							continue Outputs
 						}
 					}
 				}
+				//未被花费
 				//如果一个输出被一个地址锁定，并且这个地址恰好是我们要找的地址，那么这个输出就是我们想要的
 				if out.IsLockedWithKey(pubKeyHash) {
 					unspentTXs = append(unspentTXs, *tx)
@@ -133,10 +144,10 @@ func (chain *BlockChain)FindUnspendTransactions(pubKeyHash []byte) []Transaction
 //获取所有未被花费的输出
 func (chain *BlockChain)FindUTXO(pubKeyHash []byte) []TXOutput {
 	var UTXOs []TXOutput
-	unspentTransactions := chain.FindUnspendTransactions(pubKeyHash)//查找所有
+	unspentTransactions := chain.FindUnspendTransactions(pubKeyHash)//查找所有包含未花费输出的交易
 	for _, tx := range unspentTransactions {
 		for _,out := range tx.Vout {
-			if out.IsLockedWithKey(pubKeyHash) { //判断是否解锁
+			if out.IsLockedWithKey(pubKeyHash) { //用公钥hash判断是不是这个人的,是就累加
 				UTXOs = append(UTXOs, out)
 			}
 		}
@@ -156,9 +167,9 @@ func (chain *BlockChain)FindSpendableOutputs(pubKeyHash []byte, amount int) (int
 		for _, tx := range unspentTXs {
 			txID := hex.EncodeToString(tx.ID)
 			for outIdx, out := range tx.Vout {
-				if out.IsLockedWithKey(pubKeyHash) && accmulated < amount {
-					accmulated += out.Value	//累加金额
-					unspentOutputs[txID] = append(unspentOutputs[txID], outIdx)
+				if out.IsLockedWithKey(pubKeyHash) && accmulated < amount {	//输出属于这个地址并且数量还不够
+					accmulated += out.Value				//累加
+					unspentOutputs[txID] = append(unspentOutputs[txID], outIdx)	//该交易id中输出的索引append
 					if accmulated >= amount {
 						break Work
 					}

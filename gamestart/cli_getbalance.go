@@ -14,9 +14,9 @@ func (cli *CLI) getBalance(address string) {
 	balance := 0
 	pubkeyhash := Base58Decode([]byte(address))
 	pubkeyhash = pubkeyhash[1:len(pubkeyhash)-4]
-	UTXOs := bc.FindUTXO(pubkeyhash)	//查找交易金额
+	UTXOs := bc.FindUTXO(pubkeyhash)	//查找所有未花费输出
 	for _, out := range UTXOs {
-		balance += out.Value	//取出金额
+		balance += out.Value	//累加金额
 	}
 	fmt.Printf("查询的地址为:%s,金额为:%d \n", address, balance)
 }
