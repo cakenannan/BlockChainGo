@@ -11,7 +11,7 @@ func (cli *CLI) listAddress() {
 		log.Panic(err)
 	}
 	addresses := wallets.GetAddresses()
-	for addr := range addresses {
+	for _, addr := range addresses {
 		fmt.Println(addr)
 	}
 }

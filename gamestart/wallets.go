@@ -23,7 +23,7 @@ func NewWallets() (*Wallets, error) {
 }
 
 //创建一个钱包
-func (ws Wallets) CreateWallet() string {
+func (ws *Wallets) CreateWallet() string {
 	wallet := NewWallet()
 	address := fmt.Sprintf("%s", wallet.GetAddress())
 	ws.Wallets[address] = wallet	//保存到集合
@@ -31,7 +31,7 @@ func (ws Wallets) CreateWallet() string {
 }
 
 //从文件中读取钱包集合
-func (ws Wallets) LoadFromFile() error {
+func (ws *Wallets) LoadFromFile() error {
 	if _,err := os.Stat(walletFile); os.IsNotExist(err) {//判断文件是否存在
 		return err
 	}
@@ -67,8 +67,7 @@ func (ws Wallets) SaveToFile() {
 }
 
 //抓取钱包地址集合
-func (ws Wallets) GetAddresses() []string {
-	fmt.Println("wallets num",len(ws.Wallets))
+func (ws *Wallets) GetAddresses() []string {
 	var addresses []string
 	for address := range ws.Wallets {
 		addresses = append(addresses, address)
