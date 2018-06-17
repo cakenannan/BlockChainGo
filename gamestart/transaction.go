@@ -167,7 +167,12 @@ func (tx *Transaction) IsCoinBase() bool {
 //挖矿交易
 func NewCoinBaseTX(to, data string) *Transaction {
 	if data == "" {
-		data = fmt.Sprintf("挖矿奖励给%s",to)
+		randData := make([]byte, 20)
+		_,err := rand.Read(randData)
+		if err != nil {
+			log.Panic(err)
+		}
+		data = fmt.Sprintf("%x", randData)
 	}
 	//输入
 	txin := TXInput{[]byte{}, -1, nil, []byte(data)}	//Vout挖矿所得为-1
@@ -180,7 +185,7 @@ func NewCoinBaseTX(to, data string) *Transaction {
 }
 
 //转账交易
-func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transaction {
+func NewUTXOTransaction(from, to string, amount int, utxoset *UTXOSet) *Transaction {
 	var inputs []TXInput
 	var outputs []TXOutput
 
@@ -192,7 +197,8 @@ func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transactio
 	pubkeyhash := HashPubKey(wallet.PublicKey)
 
 	//找到未花费outputs
-	acc,validOutputs := bc.FindSpendableOutputs(pubkeyhash, amount)
+	acc,validOutputs := utxoset.FindSpendableOutputs(pubkeyhash, amount)
+	//fmt.Printf("acc=%d,amount=%d\n",acc,amount)
 	if acc < amount {
 		log.Panic("交易金额不足")
 	}
@@ -215,6 +221,6 @@ func NewUTXOTransaction(from, to string, amount int, bc *BlockChain) *Transactio
 	}
 	tx := Transaction{nil, inputs, outputs}
 	tx.ID = tx.Hash()
-	bc.SignTransaction(&tx, wallet.PrivateKey)
+	utxoset.blockchain.SignTransaction(&tx, wallet.PrivateKey)
 	return &tx
 }

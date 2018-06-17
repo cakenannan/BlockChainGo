@@ -21,7 +21,7 @@ type BlockChain struct {
 }
 
 //挖矿
-func (chain *BlockChain) MineBlock(transactions []*Transaction) {
+func (chain *BlockChain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte		//最后一个块的hash
 
 	//对交易进行验证
@@ -53,6 +53,7 @@ func (chain *BlockChain) MineBlock(transactions []*Transaction) {
 		chain.tip = newblock.Hash
 		return nil
 	})
+	return newblock
 }
 
 //交易签名
@@ -70,6 +71,9 @@ func (chain *BlockChain)SignTransaction(tx *Transaction, privatekey ecdsa.Privat
 
 //验证交易
 func (chain *BlockChain) VerifyTransaction(tx *Transaction) bool {
+	if tx.IsCoinBase() {
+		return true
+	}
 	prevTXs := make(map[string]Transaction)
 	for _, vin := range tx.Vin {
 		prevTx,err := chain.FindTransaction(vin.Txid)
@@ -142,17 +146,39 @@ func (chain *BlockChain)FindUnspendTransactions(pubKeyHash []byte) []Transaction
 }
 
 //获取所有未被花费的输出
-func (chain *BlockChain)FindUTXO(pubKeyHash []byte) []TXOutput {
-	var UTXOs []TXOutput
-	unspentTransactions := chain.FindUnspendTransactions(pubKeyHash)//查找所有包含未花费输出的交易
-	for _, tx := range unspentTransactions {
-		for _,out := range tx.Vout {
-			if out.IsLockedWithKey(pubKeyHash) { //用公钥hash判断是不是这个人的,是就累加
-				UTXOs = append(UTXOs, out)
+func (chain *BlockChain)FindUTXO() map[string]TXOutputs {
+	UTXO := make(map[string]TXOutputs)
+	spentTXOs := make(map[string][]int)	//已花费输出
+	bci := chain.Iterator()
+	for {
+		block := bci.Next()
+		for _, tx := range block.Transactions {
+			txID := hex.EncodeToString(tx.ID)
+		Outputs:
+			for outIdx, out := range tx.Vout {
+				if spentTXOs[txID] != nil {
+					for _, spendoutidx := range spentTXOs[txID] {
+						if spendoutidx == outIdx {
+							continue Outputs
+						}
+					}
+				}
+				outs := UTXO[txID]
+				outs.Outputs = append(outs.Outputs, out)
+				UTXO[txID] = outs
+			}
+			if !tx.IsCoinBase() {
+				for _, in := range tx.Vin {
+					inTxID := hex.EncodeToString(in.Txid)
+					spentTXOs[inTxID] = append(spentTXOs[inTxID], in.Vout)
+				}
 			}
 		}
+		if len(block.PrevHash) == 0 {
+			break
+		}
 	}
-	return UTXOs
+	return UTXO
 }
 
 // 对所有的未花费交易进行迭代，并对它的值进行累加。
@@ -195,7 +221,7 @@ func (chain *BlockChain) Iterator() *BlockChainIterator {
 }
 
 //新建一个区块链
-func NewBlockChain(address string) *BlockChain {
+func NewBlockChain() *BlockChain {
 	if !dbExits() {
 		fmt.Println("数据库不存在,创建")
 		os.Exit(1)

@@ -9,12 +9,13 @@ func (cli *CLI) getBalance(address string) {
 	if !ValidateAddress(address) {
 		log.Panic("地址不正确")
 	}
-	bc := NewBlockChain(address)
+	bc := NewBlockChain()
+	utxoset := UTXOSet{bc}
 	defer bc.db.Close()
 	balance := 0
 	pubkeyhash := Base58Decode([]byte(address))
 	pubkeyhash = pubkeyhash[1:len(pubkeyhash)-4]
-	UTXOs := bc.FindUTXO(pubkeyhash)	//查找所有未花费输出
+	UTXOs := utxoset.FindUTXO(pubkeyhash)	//查找所有未花费输出
 	for _, out := range UTXOs {
 		balance += out.Value	//累加金额
 	}

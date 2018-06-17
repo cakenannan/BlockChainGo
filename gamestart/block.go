@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"log"
-	"crypto/sha256"
 )
 
 //定义区块
@@ -35,13 +34,12 @@ func NewGenesisBlock(coinbase *Transaction) *Block {
 
 //对交易集合hash计算
 func (block *Block) HashTransactions() []byte {
-	var txHashes [][]byte
-	var txHash [32]byte
+	var transactions [][]byte
 	for _, tx := range block.Transactions {
-		txHashes = append(txHashes, tx.ID)
+		transactions = append(transactions, tx.Serialize())
 	}
-	txHash = sha256.Sum256(bytes.Join(txHashes, []byte{}))
-	return txHash[:]
+	mTree := NewMerkleTree(transactions)
+	return mTree.RootNode.data
 }
 
 //对象转为二进制字节集,写入文件

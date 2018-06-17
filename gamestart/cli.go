@@ -20,6 +20,7 @@ func (cli *CLI) PrintUsage()  {
 	fmt.Println("getbalance -address 地址 根据地址查询金额")
 	fmt.Println("createwallet 创建钱包")
 	fmt.Println("listaddress 列出地址集合")
+	fmt.Println("reindexutxo 重建索引")
 }
 
 func (cli *CLI) ValidateArgs() {
@@ -39,6 +40,7 @@ func (cli *CLI) Run() {
 	createblockchaincmd := flag.NewFlagSet("createblockchain", flag.ExitOnError)
 	createwalletcmd := flag.NewFlagSet("createwallet", flag.ExitOnError)
 	listaddresscmd := flag.NewFlagSet("listaddress", flag.ExitOnError)
+	reindexutxocmd := flag.NewFlagSet("reindexutxo", flag.ExitOnError)
 
 	sendfrom := sendcmd.String("from","","from地址")
 	sendto := sendcmd.String("to","","to地址")
@@ -77,6 +79,11 @@ func (cli *CLI) Run() {
 		if err != nil {
 			log.Panic(err)
 		}
+	case "reindexutxo":
+		err := reindexutxocmd.Parse(os.Args[2:])
+		if err != nil {
+			log.Panic(err)
+		}
 	default:
 		cli.PrintUsage()
 		os.Exit(1)
@@ -90,6 +97,9 @@ func (cli *CLI) Run() {
 	}
 	if listaddresscmd.Parsed() {
 		cli.listAddress()		//显示所有地址
+	}
+	if reindexutxocmd.Parsed() {
+		cli.reindexUTXO()
 	}
 	if sendcmd.Parsed() {
 		if *sendfrom == "" || *sendto == "" || *sendamount <= 0 {
