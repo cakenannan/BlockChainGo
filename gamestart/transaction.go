@@ -35,7 +35,7 @@ func (tx *Transaction) Serialize() []byte {
 }
 
 //反序列化
-func Deserialize(data []byte) Transaction {
+func DeserializeTransaction(data []byte) Transaction {
 	var transaction Transaction
 	decoder := gob.NewDecoder(bytes.NewReader(data))
 	err := decoder.Decode(&transaction)
@@ -185,15 +185,10 @@ func NewCoinBaseTX(to, data string) *Transaction {
 }
 
 //转账交易
-func NewUTXOTransaction(from, to string, amount int, utxoset *UTXOSet) *Transaction {
+func NewUTXOTransaction(wallet *Wallet, to string, amount int, utxoset *UTXOSet) *Transaction {
 	var inputs []TXInput
 	var outputs []TXOutput
 
-	wallets, err := NewWallets()
-	if err != nil {
-		log.Panic(err)
-	}
-	wallet := wallets.GetWallet(from)
 	pubkeyhash := HashPubKey(wallet.PublicKey)
 
 	//找到未花费outputs
@@ -213,6 +208,7 @@ func NewUTXOTransaction(from, to string, amount int, utxoset *UTXOSet) *Transact
 			inputs = append(inputs, input)
 		}
 	}
+	from := fmt.Sprintf("%s", wallet.GetAddress())
 	// 对于outputs,包括数量amount指向to,和数量acc-amount指向from
 	outputs = append(outputs, *NewTXOutput(amount, to))	//输出到to
 	//因为输出不可分,所以acc可能大于amount,要找零

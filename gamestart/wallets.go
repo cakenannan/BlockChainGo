@@ -15,10 +15,10 @@ type Wallets struct {
 }
 
 //创建钱包集合,或抓取已经存在的钱包集合
-func NewWallets() (*Wallets, error) {
+func NewWallets(nodeID string) (*Wallets, error) {
 	wallets := Wallets{}
 	wallets.Wallets = make(map[string]*Wallet)
-	err := wallets.LoadFromFile()
+	err := wallets.LoadFromFile(nodeID)
 	return &wallets, err
 }
 
@@ -31,11 +31,12 @@ func (ws *Wallets) CreateWallet() string {
 }
 
 //从文件中读取钱包集合
-func (ws *Wallets) LoadFromFile() error {
-	if _,err := os.Stat(walletFile); os.IsNotExist(err) {//判断文件是否存在
+func (ws *Wallets) LoadFromFile(nodeID string) error {
+	myWalletFile := fmt.Sprintf(walletFile, nodeID)
+	if _,err := os.Stat(myWalletFile); os.IsNotExist(err) {//判断文件是否存在
 		return err
 	}
-	fileContent, err := ioutil.ReadFile(walletFile)	//读取文件
+	fileContent, err := ioutil.ReadFile(myWalletFile)	//读取文件
 	if err != nil {
 		log.Panic(err)
 	}
@@ -52,7 +53,8 @@ func (ws *Wallets) LoadFromFile() error {
 }
 
 //钱包集合保存到文件
-func (ws Wallets) SaveToFile() {
+func (ws Wallets) SaveToFile(nodeID string) {
+	myWalletFile := fmt.Sprintf(walletFile, nodeID)
 	var content bytes.Buffer
 	gob.Register(elliptic.P256())
 	encoder := gob.NewEncoder(&content)
@@ -60,7 +62,7 @@ func (ws Wallets) SaveToFile() {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = ioutil.WriteFile(walletFile, content.Bytes(), 0644)
+	err = ioutil.WriteFile(myWalletFile, content.Bytes(), 0644)
 	if err != nil {
 		log.Panic(err)
 	}

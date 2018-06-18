@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
-func (cli *CLI) listAddress() {
-	wallets,err := NewWallets()
+func (cli *CLI) listAddress(nodeID string) {
+	wallets,err := NewWallets(nodeID)
 	if err != nil {
 		log.Panic(err)
 	}

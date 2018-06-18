@@ -11,7 +11,7 @@ import (
 )
 
 const version = byte(0x00)      //钱包版本
-const walletFile = "wallet.dat" //钱包文件
+const walletFile = "wallet_%s.dat" //钱包文件
 const addressChecksumLen = 4    //公钥hash的摘要位数
 
 type Wallet struct {

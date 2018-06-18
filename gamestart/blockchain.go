@@ -11,7 +11,6 @@ import (
 	"errors"
 )
 
-const dbFile = "blockchain.db"		//数据库文件名，在当前目录下
 const blockBucket = "blocks"			//bucket名称
 const genesisCoinbaseData = "涛酱的创世区块数据"
 
@@ -23,6 +22,7 @@ type BlockChain struct {
 //挖矿
 func (chain *BlockChain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte		//最后一个块的hash
+	var lastHeight int
 
 	//对交易进行验证
 	for _, tx := range transactions {
@@ -34,15 +34,19 @@ func (chain *BlockChain) MineBlock(transactions []*Transaction) *Block {
 	err := chain.db.View(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blockBucket))
 		lastHash = bucket.Get([]byte("l"))	//取出链上最后一个hash
+		blockData := bucket.Get(lastHash)
+		block := DeserializeBlock(blockData)
+		lastHeight = block.Height
 		return nil
 	})
 	if err != nil {
 		log.Panic(err)
 	}
-	newblock := NewBlock(transactions, lastHash)	//创建新区块
+	newblock := NewBlock(transactions, lastHash, lastHeight+1)	//创建新区块,编号加一
 	err = chain.db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blockBucket))
 		err := bucket.Put(newblock.Hash, newblock.Serialize())//插入数据
+		fmt.Println("mine blockhash",newblock.Hash)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -207,7 +211,7 @@ func (chain *BlockChain)FindSpendableOutputs(pubKeyHash []byte, amount int) (int
 }
 
 //判断数据库是否存在
-func dbExits() bool {
+func dbExits(dbFile string) bool {
 	if _,err := os.Stat(dbFile);os.IsNotExist(err) {
 		return false
 	}
@@ -221,8 +225,9 @@ func (chain *BlockChain) Iterator() *BlockChainIterator {
 }
 
 //新建一个区块链
-func NewBlockChain() *BlockChain {
-	if !dbExits() {
+func NewBlockChain(nodeID string) *BlockChain {
+	dbFile := fmt.Sprintf("blockchain_%s.db", nodeID)
+	if !dbExits(dbFile) {
 		fmt.Println("数据库不存在,创建")
 		os.Exit(1)
 	}
@@ -245,8 +250,9 @@ func NewBlockChain() *BlockChain {
 }
 
 //创建一个区块链
-func CreateBlockChain(address string) *BlockChain {
-	if dbExits() {
+func CreateBlockChain(address string, nodeID string) *BlockChain {
+	dbFile := fmt.Sprintf("blockchain_%s.db", nodeID)
+	if dbExits(dbFile) {
 		fmt.Println("数据库存在")
 		os.Exit(1)
 	}
@@ -277,4 +283,82 @@ func CreateBlockChain(address string) *BlockChain {
 
 	bc:= BlockChain{tip, db}	//创建一个区块链
 	return &bc
+}
+
+//抓取最后一个区块用于同步
+func (chain *BlockChain)GetBestHeight() int {
+	var lastBlock Block
+	err := chain.db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(blockBucket))
+		lastHash := bucket.Get([]byte("l"))		//取出最后一个块的hash
+		blockdata := bucket.Get(lastHash)
+		lastBlock = *DeserializeBlock(blockdata)	//解码得到最后一个块
+		return nil
+	})
+	if err != nil {
+		log.Panic(err)
+	}
+	return lastBlock.Height
+}
+
+//增加块
+func (chain *BlockChain)AddBlock(block *Block) {
+	err := chain.db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(blockBucket))
+		blockInDb := bucket.Get(block.Hash)
+		if blockInDb != nil {	//已经存在
+			return nil
+		}
+		blockData := block.Serialize()
+		err := bucket.Put(block.Hash, blockData)
+		if err != nil {
+			log.Panic(err)
+		}
+		lastHash := bucket.Get([]byte("l"))
+		lastblockdata := bucket.Get(lastHash)
+		lastblock := DeserializeBlock(lastblockdata)
+		if block.Height > lastblock.Height {
+			err := bucket.Put([]byte("l"), block.Hash)
+			if err != nil {
+				log.Panic(err)
+			}
+			chain.tip = block.Hash
+		}
+		return nil
+	})
+	if err != nil {
+		log.Panic(err)
+	}
+}
+
+//根据blockhash获取块
+func (chain *BlockChain)GetBlock(blockhash []byte) (Block, error) {
+	var block Block
+	err := chain.db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(blockBucket))
+		blockdata := bucket.Get(blockhash)
+		if blockdata == nil {
+			return errors.New("没有找到区块")
+		}
+		block = *DeserializeBlock(blockdata)
+		return nil
+	})
+	if err != nil {
+		return block, err
+	}
+	return block, nil
+}
+
+//获取链上所有块的hash集合
+func (chain *BlockChain)GetBlockHashes() [][]byte {
+	var blockhashes [][]byte
+	bci := chain.Iterator()
+	for {
+		block := bci.Next()
+		blockhashes = append(blockhashes, block.Hash)
+		if len(block.PrevHash) == 0 {
+			break
+		}
+	}
+	return blockhashes
 }
